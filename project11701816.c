@@ -168,6 +168,7 @@ printf("sum of queues %d %d %d  total %d\n",p_sum,z_sum,x_sum,m_sum);
 
           // main loop start from here
 pr[0]='N';
+int t_v=-1;
 t_process[0]=-1; 
 t_time[0]=0;
 int j=0,i=0;
@@ -187,7 +188,11 @@ while(bsum>0)
                  if(p_bt[i] >=4 && (10-(t_time[j]-var)) >=4)
                        { 
                          pr[j+1]='P';
+			 if(i>t_v)
+			 {
                          test=test+p_bt[i];
+			   t_v++;	 
+			 }	 
                          t_time[j+1]=t_time[j] + 4;
                          t_process[j+1]=p[i];
                          bsum= bsum -4;
@@ -199,7 +204,11 @@ while(bsum>0)
                else if(p_bt[i] >=4)
                         { 
                          pr[j+1]='P';
+                        if(i>t_v)
+			 {
                          test=test+p_bt[i];
+			   t_v++;	 
+			 }
                          t_time[j+1]=t_time[j] + (10-(t_time[j]-var)) ;
                          t_process[j+1]=p[i];
                          bsum= bsum -(10-(t_time[j]-var));
@@ -212,16 +221,26 @@ while(bsum>0)
                  else if( p_bt[i] <4 && p_bt[i]>0 && (10-(t_time[j]-var)) >=p_bt[i])
                         { 
                          pr[j+1]='P';
+			 if(i>t_v)
+			 {
+                         test=test+p_bt[i];
+			   t_v++;	 
+			 }
                          t_time[j+1]=t_time[j] + p_bt[i];
                          t_process[j+1]=p[i];
                          bsum= bsum -p_bt[i];
                          p_sum=p_sum - p_bt[i];
+			 test=test-p_bt[i];
                          p_bt[i]=p_bt[i]-p_bt[i];
                         }
                  else if(p_bt[i] <4 && p_bt[i]>0 && (10-(t_time[j]-var)) <p_bt[i])
                         {
                          pr[j+1]='P';
+                         if(i>t_v)
+			 {
                          test=test+p_bt[i];
+			   t_v++;	 
+			 }
                          t_process[j+1]=p[i];
                          t_time[j+1]=t_time[j] + (10-(t_time[j]-var));
                          bsum= bsum -(10-(t_time[j]-var));
@@ -233,8 +252,6 @@ while(bsum>0)
                   else 
                         { 
                          j--;  
-                     
-                    
                         }
                   
                 }
@@ -247,7 +264,13 @@ while(bsum>0)
                 i=-1;  
                  }
                 else 
-                     {  
+                     {  if(test==0)
+		        { 
+			      t_time[j+1]=p_at[i]; 
+                               t_process[j+1]=-1;
+                                pr[j+1]='N'; 
+                               i=-1;  
+		        } 
                             j--;
                             i=-1;
                            
