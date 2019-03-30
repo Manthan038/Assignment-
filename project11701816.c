@@ -1,16 +1,34 @@
 #include<unistd.h>
 #include<stdio.h>
 #include<sys/wait.h>
-
-int main()
-{
 int m[100],m_at[100],m_bt[100],m_sum=0,priority[100];
-int p_f,p_s;
+int p_f,p_s,count=0,pos;
 int p[100],p_at[100],p_bt[100],p_priority[100];
 int x[100],x_at[100],x_bt[100],x_priority[100];
 int z[100],z_at[100],z_bt[100],z_pr[100],z_priority[100];
 int t_time[100],t_process[100],bsum,p_sum=0,temp=0,p_process,x_sum=0,z_sum=0;
 char pr[100];
+int position(int x)
+{
+int min,pos,i=-1;
+do
+{i++;
+min=z_at[i];
+pos=i;
+}while(z_bt[i]==0);
+for (int i=0;i<x;i++)
+	{
+	if(z_at[i]<min && z_bt[i] >0)
+           { min =z_at[i];
+             pos=i;
+            } 
+               
+	}
+return(pos);
+}
+int main()
+{
+
 printf("Enter Total number of processes \n");
 scanf("%d",&p_process);
 printf("process\t\tArriaval time\t\tBurst time\t\tPriority\n");
@@ -160,6 +178,7 @@ for (int i=0;z[i] !='\0';i++)
 printf("\t\t\tfor third queue\nProcesses\t\tArrival time\t\tBurst time \t\tPriority\n");
 for (int i=0;x[i]!='\0';i++)
 {
+	 count++;
   printf("P(%d)\t\t\t%d\t\t\t%d\t\t\t%d\n",x[i],x_at[i],x_bt[i],x_priority[i]);
 }
 
@@ -291,48 +310,79 @@ while(bsum>0)
                                                      
             var=t_time[j];
     while((t_time[j]-var)<10)
-{  
-	if(z_sum==0)
+{ 
+	    pos=position(count);
+		if(z_sum==0)
 	{
 	break;
-	}
-	else if(z_at[i]<=t_time[j]) 
+	} 
+  else if(z_at[pos]<=t_time[j]) 
 	{
-	  if(z_bt[i] <= (10-(t_time[j]-var)) && z_bt[i]>0)
-                       {
-                         pr[j+1]='Z';
-                         t_time[j+1]=t_time[j] + z_bt[i];
-                         t_process[j+1]=z[i];
-                         bsum= bsum -z_bt[i];
-                         z_sum=z_sum-z_bt[i];
-                         z_bt[i]=0;
-                         
-                      
+	  	if(z_at[i]<=t_time[j] && z_bt[i]>0)          
+	    	    { 		
+                 		 int x,timegp;
+                 		   x =position(i);
+		 		 timegp=z_at[x]-z_at[i];
+		 	    if(timegp==0 || z_bt[i]<=timegp)
+				{
+					if(z_bt[i] <= (10-(t_time[j]-var)) && z_bt[i]>0)
+                   			    { 
+                    			     pr[j+1]='Z';
+                    			     t_time[j+1]=t_time[j] + z_bt[i];
+                    			     t_process[j+1]=z[i];
+                    			     bsum= bsum -z_bt[i];
+				         	z_sum=z_sum-z_bt[i];
+                   			      z_bt[i]=0;
                           
-                        }
-	else if(z_bt[i]>(10-(t_time[j]-var)) && z_bt[i]>0)
-		{
-                         pr[j+1]='Z';
-                         
-                         t_time[j+1]=t_time[j] + (10-(t_time[j]-var));
-                         t_process[j+1]=z[i];
-                         bsum= bsum -(10-(t_time[j]-var));
-                         z_sum=z_sum-(10-(t_time[j]-var));
-                         z_bt[i]=z_bt[i]-(10-(t_time[j]-var));
-                         
-                      
+                     		            }
+				else           
+					{
+					 
+                		         pr[j+1]='Z';
+             			            t_time[j+1]=t_time[j] + (10-(t_time[j]-var));
+                		         t_process[j+1]=z[i];
+                		         bsum= bsum -(10-(t_time[j]-var));
+                		         z_sum=z_sum-(10-(t_time[j]-var));
+                		         z_bt[i]=z_bt[i]-(10-(t_time[j]-var));
+                		      
                           
-		}
-	else 
+				    }
+				
+		  	      }
+			else
+			{
+			  if(timegp <= (10-(t_time[j]-var)))
+    				{
+				                pr[j+1]='Z';
+                    			        t_time[j+1]=t_time[j] + timegp;
+                    			        t_process[j+1]=z[i];
+                    			        bsum= bsum -timegp;
+				         	z_sum=z_sum-timegp;
+                   			        z_bt[i]=z_bt[i]-timegp;
+                                                      i=-1;
+				}
+			  else 
+				{ 
+				               pr[j+1]='Z';
+                    			       t_time[j+1]=t_time[j] + (10-(t_time[j]-var));
+                    			       t_process[j+1]=z[i];
+                    			       bsum= bsum -(10-(t_time[j]-var));
+				               z_sum=z_sum-(10-(t_time[j]-var));
+                   			       z_bt[i]=z_bt[i]-(10-(t_time[j]-var));
+				}
+			}
+	              }
+	  
+           else
 		{
-		 j--;
+		j--;
 		}
 	}
       else 
 	{
-	  t_time[j+1]=z_at[i]; 
+	  t_time[j+1]=z_at[pos];   // change here
                  t_process[j+1]=-1;
-                 pr[j+1]='N'; 
+                 pr[j+1]='N';  
                 i=-1; 
 	}
     
