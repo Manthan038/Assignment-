@@ -5,7 +5,7 @@ int z[100],z_at[100],z_bt[100],z_pr[100],z_priority[100];
 int t_time[100],t_process[100],bsum,p_sum=0,temp=0,p_process,x_sum=0,z_sum=0;
 char pr[100];
 int m[100],m_at[100],m_bt[100],m_sum=0,priority[100];
-int p_f,p_s,count=0,pos;
+int p_f,p_s,count=0;
 int p[100],p_at[100],p_bt[100],p_priority[100];
 int x[100],x_at[100],x_bt[100],x_priority[100];
 int position(int x)
@@ -186,6 +186,8 @@ for (int i=0;x[i]!='\0';i++)
 printf("sum of queues %d %d %d  total %d\n",p_sum,z_sum,x_sum,m_sum);
 
           // main loop start from here
+int qu1=0,qu2=0;
+int check=-1,temp,quanta;
 pr[0]='N';
 int t_v=-1;
 t_process[0]=-1; 
@@ -202,9 +204,12 @@ while(bsum>0)
                 {
                   break; 
                 }
-            else if(p_at[i]<=t_time[j])
+	    if(check==i)
+                {quanta =temp;}
+             else{quanta = 4;}
+            if(p_at[i]<=t_time[j])
                 {
-                 if(p_bt[i] >=4 && (10-(t_time[j]-var)) >=4)
+                 if(p_bt[i] >=quanta && (10-(t_time[j]-var)) >=quanta)
                        { 
                          pr[j+1]='P';
 			 if(i>t_v)
@@ -212,15 +217,15 @@ while(bsum>0)
                          test=test+p_bt[i];
 			   t_v++;	 
 			 }	 
-                         t_time[j+1]=t_time[j] + 4;
+                         t_time[j+1]=t_time[j] +quanta;
                          t_process[j+1]=p[i];
-                         bsum= bsum -4;
-                         p_sum=p_sum-4;
-                         p_bt[i]=p_bt[i]-4;
-                         test=test-4;
-                          
+                         bsum= bsum -quanta;
+                         p_sum=p_sum-quanta;
+                         p_bt[i]=p_bt[i]-quanta;
+                         test=test-quanta;
+                         temp=4;  
                         }
-               else if(p_bt[i] >=4)
+               else if(p_bt[i] >=quanta)
                         { 
                          pr[j+1]='P';
                         if(i>t_v)
@@ -234,8 +239,9 @@ while(bsum>0)
                          p_sum=p_sum-(10-(t_time[j]-var));
                          p_bt[i]=p_bt[i]-(10-(t_time[j]-var));
                          test=test-(10-(t_time[j]-var));
-                       
-
+                         temp=quanta-(10-(t_time[j]-var));
+                         check=i;
+                          i--;
                          }
                  else if( p_bt[i] <4 && p_bt[i]>0 && (10-(t_time[j]-var)) >=p_bt[i])
                         { 
@@ -251,9 +257,10 @@ while(bsum>0)
                          p_sum=p_sum - p_bt[i];
 			 test=test-p_bt[i];
                          p_bt[i]=p_bt[i]-p_bt[i];
+			 temp=4;
                         }
                  else if(p_bt[i] <4 && p_bt[i]>0 && (10-(t_time[j]-var)) <p_bt[i])
-                        {
+                        {temp=4;
                          pr[j+1]='P';
                          if(i>t_v)
 			 {
@@ -269,7 +276,7 @@ while(bsum>0)
                           
                         }
                   else 
-                        { 
+                        { temp=4;
                          j--;  
                         }
                   
@@ -277,7 +284,13 @@ while(bsum>0)
             else 
                { if(j==0 )
                   {
-                   t_time[j+1]=p_at[i]; 
+                   if(j==0 )
+                  {  
+                      if((p_at[i]-t_time[j]) <= (10-(t_time[j]-var)  )){                             
+                  	 t_time[j+1]=p_at[i]; 
+			}
+                      else{
+			t_time[j+1]=(10-(t_time[j]-var)  );
                  t_process[j+1]=-1;
                  pr[j+1]='N'; 
                 i=-1;  
@@ -285,13 +298,19 @@ while(bsum>0)
                 else 
                      {  if(test==0)
 		        { 
-			      t_time[j+1]=p_at[i]; 
+			      if(j==0 )
+                  {  
+                      if((p_at[i]-t_time[j]) <= (10-(t_time[j]-var)  )){                             
+                  	 t_time[j+1]=p_at[i]; 
+			}
+                      else{
+			t_time[j+1]=(10-(t_time[j]-var)  ); 
                                t_process[j+1]=-1;
                                 pr[j+1]='N'; 
                                i=-1;  
 		        } 
-                            j--;
-                            i=-1;
+                        else{    j--;
+                            i=-1;}
                            
                      }  
                        
@@ -303,10 +322,11 @@ while(bsum>0)
                    i=0; 
                  }
           j=j+1;
-          }
+    }
+i=qu1;
  i=0;     
         
-     
+     // Second Queue
                                                      
             var=t_time[j];
     while((t_time[j]-var)<10)
@@ -380,7 +400,13 @@ while(bsum>0)
 	}
       else 
 	{
-	  t_time[j+1]=z_at[pos];   // change here
+	  if((z_at[pos]-t_time[j])<=(10-(t_time[j]-var)))
+		{
+		  t_time[j+1]=z_at[pos];    
+		}
+	else{
+		t_time[j+1]=(10-(t_time[j]-var));   // change here
+        	}
                  t_process[j+1]=-1;
                  pr[j+1]='N';  
                 i=-1; 
@@ -394,6 +420,7 @@ while(bsum>0)
           j=j+1;
   
 }
+qu2=i;
 i=0;    
             var=t_time[j];
           
@@ -434,7 +461,13 @@ while((t_time[j]-var)<10)
 	}
       else 
 	{
-	  t_time[j+1]=x_at[i]; 
+	  if((x_at[i]-t_time[j])<=(10-(t_time[j]-var)))
+		{
+		  t_time[j+1]=x_at[i];   
+		}
+	else{
+		t_time[j+1]=(10-(t_time[j]-var));  
+        	} 
                  t_process[j+1]=-1;
                  pr[j+1]='N'; 
                 i=-1; 
@@ -448,16 +481,38 @@ while((t_time[j]-var)<10)
           j=j+1;
  
 }
-i=0;
+
 
 }
-   for(int k=0;k<=j;k++)
- {
-   printf("process %c [%d] with time %d\n",pr[k],t_process[k],t_time[k]);
- }
+printf("\n\n*************************Ghantt chart of Processes*********************************\n\n");
+for(int k=0;k<j;k++)
+{
+   		printf("========");
 
+}
+printf("\n||");
+for(int k=0;k<=j;k++)
+{
+  if(k<j){  if (t_process[k+1]!=-1)
+   		printf(" p(%d) ||",t_process[k+1]);
+            else {printf(" NONE ||");}
+	}   
 
+}
+printf("\n");
+for(int k=0;k<j;k++)
+{
+   		printf("========");
 
+}
+printf("\n0");
+for(int k=0;k<=j;k++)
+{
+  if(k<j){	
+  printf("\t%d",t_time[k+1]);
+         }
 
+}
+printf("\n"); 
 
 }
