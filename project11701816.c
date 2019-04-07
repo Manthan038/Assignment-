@@ -514,5 +514,65 @@ for(int k=0;k<=j;k++)
 
 }
 printf("\n"); 
+for(int k=0;k<j;k++)
+{
+   		printf("========");
 
+}
+printf("\n0");
+for(int k=0;k<=j;k++)
+{
+  if(k<j){	
+  printf("\t%d",t_time[k+1]);
+         }
+
+}
+printf("\n");
+float aw,ab,awt=0,att=0;
+int npb[100],npa[100];
+int prt[100],start[100],end[100],f=0;
+for(int i=0 ; t_process[i]!='\0';i++)
+{
+  if(t_process[i]!=-1)
+	{
+	 prt[f]=t_process[i];
+         start[f]=t_time[i-1];
+	 for(int l =j;l>=0;l--)
+		{
+		 if(t_process[i]==t_process[l])
+			{
+			end[f]=t_time[l];
+                        break;
+			}
+		}
+            f++;
+	}
+}
+for(int i=0;i<p_process;i++)
+{ for(int j=0;j<p_process;j++)
+	{
+	if(prt[i]==m[j])
+		{
+		 npa[i]=m_at[j];
+                 npb[i]=m_bt[j];
+                 break;
+		}
+	}
+ 
+}
+printf("------------------------------------------------------------------------------\n");
+printf("\t\t\tPROCESS TABLE\n");
+printf("------------------------------------------------------------------------------\n");
+printf("PROCESS\t\tTURN AROUND TIME \t WAITING TIME\tCOMPLITION TIME\n"); 
+for(int i=0; i<f;i++)
+{
+printf("P(%d)\t\t %d \t\t\t\t%d\t\t%d\n",prt[i],end[i]-npa[i],(end[i]-npa[i]-npb[i]),end[i]);
+  awt=awt+(end[i]-npa[i]-npb[i]);
+  att=att+end[i]-npa[i];
+} 
+aw=awt/f;
+ab=att/f;
+printf("\t\t-------------\t\t-------------\n");
+printf("AVARAGE\t\t%0.3f\t\t\t\t%0.3f\n",ab,aw); 
+printf("\t\t--------------\t\t-------------\n");
 }
