@@ -290,7 +290,7 @@ while(bsum>0)
                   	 t_time[j+1]=p_at[i]; 
 			}
                       else{
-			t_time[j+1]=(10-(t_time[j]-var)  );
+			t_time[j+1]=t_time[j]+(10-(t_time[j]-var)  );
                  t_process[j+1]=-1;
                  pr[j+1]='N'; 
                 i=-1;  
@@ -304,7 +304,7 @@ while(bsum>0)
                   	 t_time[j+1]=p_at[i]; 
 			}
                       else{
-			t_time[j+1]=(10-(t_time[j]-var)  ); 
+			t_time[j+1]=t_time[j]+(10-(t_time[j]-var)  ); 
                                t_process[j+1]=-1;
                                 pr[j+1]='N'; 
                                i=-1;  
@@ -405,7 +405,7 @@ i=qu1;
 		  t_time[j+1]=z_at[pos];    
 		}
 	else{
-		t_time[j+1]=(10-(t_time[j]-var));   // change here
+		t_time[j+1]=t_time[j]+(10-(t_time[j]-var));   // change here
         	}
                  t_process[j+1]=-1;
                  pr[j+1]='N';  
@@ -466,7 +466,7 @@ while((t_time[j]-var)<10)
 		  t_time[j+1]=x_at[i];   
 		}
 	else{
-		t_time[j+1]=(10-(t_time[j]-var));  
+		t_time[j+1]=t_time[j]+(10-(t_time[j]-var));  
         	} 
                  t_process[j+1]=-1;
                  pr[j+1]='N'; 
