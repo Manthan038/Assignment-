@@ -1,13 +1,13 @@
 #include<unistd.h>
 #include<stdio.h>
 #include<sys/wait.h>
+int z[100],z_at[100],z_bt[100],z_pr[100],z_priority[100];
+int t_time[100],t_process[100],bsum,p_sum=0,temp=0,p_process,x_sum=0,z_sum=0;
+char pr[100];
 int m[100],m_at[100],m_bt[100],m_sum=0,priority[100];
 int p_f,p_s,count=0,pos;
 int p[100],p_at[100],p_bt[100],p_priority[100];
 int x[100],x_at[100],x_bt[100],x_priority[100];
-int z[100],z_at[100],z_bt[100],z_pr[100],z_priority[100];
-int t_time[100],t_process[100],bsum,p_sum=0,temp=0,p_process,x_sum=0,z_sum=0;
-char pr[100];
 int position(int x)
 {
 int min,pos,i=-1;
