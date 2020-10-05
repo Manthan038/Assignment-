@@ -29,7 +29,7 @@ return(pos);
 int main()
 {
 
-printf("Enter Total number of processes \n");
+printf("Enter Total number of processes_ \n");
 scanf("%d",&p_process);
 printf("process\t\tArriaval time\t\tBurst time\t\tPriority\n");
 for(int i=0;i<p_process;i++)
